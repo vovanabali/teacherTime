@@ -1,0 +1,58 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vitgtk.teacherTime.dao.TeacherLessonDao">
+    <resultMap id="teacherLesson" type="com.vitgtk.teacherTime.domain.TeachersLesson">
+        <id column="id" property="id"/>
+        <association property="lesson" javaType="com.vitgtk.teacherTime.domain.Lesson">
+            <id column="lesson_id" property="id"/>
+            <result column="lesson_name" property="name"/>
+        </association>
+        <association property="group" javaType="com.vitgtk.teacherTime.domain.Group">
+            <id column="group_id" property="id"/>
+            <result column="grup_number" property="groupNamber"/>
+        </association>
+        <collection property="exactTime" ofType="com.vitgtk.teacherTime.domain.LessonTime">
+            <id column="lesson_time_id" property="id"/>
+            <result column="lesson_time_date" property="date"/>
+            <result column="lesson_time_count" property="timeCount"/>
+            <result column="lesson_time_info" property="info"/>
+            <result column="lesson_time_teacher_lesson_id" property="teacher_lesson_id"/>
+        </collection>
+    </resultMap>
+    <sql id="teacherLessonAll">
+      SELECT
+        teacher_leson.id,
+        les.id                        AS lesson_id,
+        les.name                      AS lesson_name,
+        grup.id                       AS group_id,
+        grup.number                   AS grup_number,
+        lesson_time.id                AS lesson_time_id,
+        lesson_time.lesson_date       AS lesson_time_date,
+        lesson_time.time_count        AS lesson_time_count,
+        lesson_time.info              AS lesson_time_info,
+        lesson_time.teacher_lesson_id AS lesson_time_teacher_lesson_id
+      FROM lesson_schema.teacher_leson AS teacher_leson
+      INNER JOIN lesson_schema.lesson AS les ON (les.id = teacher_leson.lesson_id)
+      INNER JOIN teacher_schema."group" AS grup ON (teacher_leson.group_id = grup.id)
+      RIGHT JOIN lesson_schema.lesson_time AS lesson_time ON (lesson_time.teacher_lesson_id = teacher_leson.id)
+    </sql>
+    <select id="getTeacherLesson" parameterType="java.lang.Integer" resultMap="teacherLesson">
+        <include refid="teacherLessonAll"/>
+        WHERE teacher_leson.id = #{id}
+    </select>
+    <select id="getTeacherLessons" parameterType="com.vitgtk.teacherTime.domain.User" resultMap="teacherLesson">
+        <include refid="teacherLessonAll"/>
+        WHERE teacher_leson.teacher_id = #{id}
+    </select>
+    <insert id="addTeacherLesson" parameterType="com.vitgtk.teacherTime.domain.TeachersLesson">
+        INSERT INTO lesson_schema.teacher_leson (teacher_id, lesson_id, group_id, all_time)
+        VALUES (#{teacherId}, #{lesson.id}, #{group.id}, #{allTime})
+    </insert>
+    <delete id="deleteTeacherLesson" parameterType="com.vitgtk.teacherTime.domain.TeachersLesson">
+          DELETE FROM lesson_schema.teacher_leson
+          WHERE id = #{id}
+    </delete>
+    <delete id="deleteAllTeacherLessons" parameterType="com.vitgtk.teacherTime.domain.User">
+        DELETE FROM lesson_schema.teacher_leson
+        WHERE teacher_id = #{id};
+    </delete>
+</mapper>

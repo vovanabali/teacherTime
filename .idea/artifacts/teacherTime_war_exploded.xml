@@ -1,0 +1,48 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="teacherTime:war exploded">
+    <output-path>$PROJECT_DIR$/target/teacherTime</output-path>
+    <root id="root">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="teacherTime" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Maven: org.codehaus.jackson:jackson-mapper-asl:1.9.13" />
+          <element id="library" level="project" name="Maven: org.codehaus.jackson:jackson-core-asl:1.9.13" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.9.2" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.9.0" />
+          <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.9.2" />
+          <element id="library" level="project" name="Maven: org.mybatis:mybatis:3.4.5" />
+          <element id="library" level="project" name="Maven: org.mybatis:mybatis-spring:1.3.1" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-jdbc:5.0.4.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-beans:5.0.4.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-core:5.0.4.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-jcl:5.0.4.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-tx:5.0.4.RELEASE" />
+          <element id="library" level="project" name="Maven: org.postgresql:postgresql:42.1.4" />
+          <element id="library" level="project" name="Maven: javax.validation:validation-api:2.0.0.Final" />
+          <element id="library" level="project" name="Maven: org.hibernate.validator:hibernate-validator:6.0.3.Final" />
+          <element id="library" level="project" name="Maven: org.jboss.logging:jboss-logging:3.3.0.Final" />
+          <element id="library" level="project" name="Maven: com.fasterxml:classmate:1.3.1" />
+          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-core:5.0.2.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-aop:5.0.4.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-context:5.0.4.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-expression:5.0.4.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-web:5.0.2.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-web:5.0.4.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-taglibs:5.0.2.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-acl:5.0.2.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework.security:spring-security-config:5.0.2.RELEASE" />
+          <element id="library" level="project" name="Maven: javax.servlet:javax.servlet-api:3.1.0" />
+          <element id="library" level="project" name="Maven: javax.servlet.jsp:javax.servlet.jsp-api:2.3.1" />
+          <element id="library" level="project" name="Maven: javax.servlet:jstl:1.2" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:5.0.4.RELEASE" />
+        </element>
+      </element>
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/target/teacherTime/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="javaee-facet-resources" facet="teacherTime/web/Web" />
+    </root>
+  </artifact>
+</component>

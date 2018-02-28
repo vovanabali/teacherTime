@@ -1,0 +1,51 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vitgtk.teacherTime.dao.UserDao">
+    <resultMap id="user" type="com.vitgtk.teacherTime.domain.User">
+        <id column="ID" property="id"/>
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="surname" property="surname"/>
+        <result column="patronymic" property="patronymic"/>
+        <result column="password" property="password"/>
+        <result column="mail" property="mail"/>
+        <result column="login" property="login"/>
+        <collection property="roles" javaType="List" ofType="com.vitgtk.teacherTime.domain.Role">
+            <id column="role_id" property="id"/>
+            <result column="role_id" property="id"/>
+            <result column="role_name" property="name"/>
+        </collection>
+    </resultMap>
+    <sql id="userInfoWithRole">
+      SELECT
+        teacher.*,
+        role_info.id   AS role_id,
+        role_info.name AS role_name
+      FROM teacher_schema.teacher AS teacher LEFT JOIN (role_schema.teatcher_role
+      RIGHT JOIN role_schema.role ON teatcher_role.role_id = role.id) AS role_info ON (teacher.id = role_info.teatcher_id)
+    </sql>
+    <select id="getUserById" resultMap="user" parameterType="java.lang.Integer">
+        <include refid="userInfoWithRole"/>
+        WHERE teacher.id = #{id}
+    </select>
+    <select id="getUserByLogin" resultMap="user" parameterType="java.lang.String">
+        <include refid="userInfoWithRole"/>
+        WHERE login = #{login}
+    </select>
+    <select id="getAllUsersByGroup" resultMap="user">
+        SELECT teacher.*
+        FROM teacher_schema.teacher AS teacher RIGHT JOIN
+        (teacher_schema."group" AS grup INNER JOIN lesson_schema.teacher_leson AS leson
+        ON (grup.id = leson.group_id)) AS group_with_lesson ON (teacher.id = group_with_lesson.teacher_id)
+    </select>
+    <insert id="addUser" parameterType="com.vitgtk.teacherTime.domain.User">
+        INSERT INTO teacher_schema.teacher ( name, surname, patronymic, password, mail, login)
+        VALUES (#{name}, #{surname}, #{password}, #{mail}, #{login})
+    </insert>
+    <delete id="remuveUser">
+        DELETE FROM teacher_schema.teacher
+        WHERE id = #{id}
+    </delete>
+    <select id="getAllUsers" resultMap="user">
+        <include refid="userInfoWithRole"/>
+    </select>
+</mapper>

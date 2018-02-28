@@ -1,0 +1,26 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vitgtk.teacherTime.dao.LessonTimeDao">
+    <resultMap id="lessonTime" type="com.vitgtk.teacherTime.domain.LessonTime">
+        <id column="id" property="id"/>
+        <result column="lesson_date" property="date"/>
+        <result column="time_count" property="timeCount"/>
+        <result column="info" property="info"/>
+    </resultMap>
+    <select id="getLssonTime" resultMap="lessonTime" parameterType="com.vitgtk.teacherTime.domain.LessonTime">
+        SELECT * FROM lesson_schema.lesson_time
+        WHERE id = #{id}
+    </select>
+    <select id="getLessonTime" resultMap="lessonTime" parameterType="com.vitgtk.teacherTime.domain.TeachersLesson">
+        SELECT lesson_schema.lesson_time.*
+        FROM lesson_schema.lesson_time
+        WHERE teacher_lesson_id = #{id}
+    </select>
+    <insert id="addLessonTime" parameterType="com.vitgtk.teacherTime.domain.TeachersLesson">
+        INSERT INTO lesson_schema.lesson_time (lesson_date, time_count, info, teacher_lesson_id)
+        VALUES (#{date}, #{timeCount}, #{info}, #{teacher_lesson_id})
+    </insert>
+    <delete id="remuveLessonTime" parameterType="com.vitgtk.teacherTime.domain.TeachersLesson">
+        DELETE FROM lesson_schema.lesson_time
+        WHERE id = #{id}
+    </delete>
+</mapper>

@@ -1,0 +1,50 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vitgtk.teacherTime.dao.RoleDao">
+    <resultMap id="role" type="com.vitgtk.teacherTime.domain.Role">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+    </resultMap>
+    <sql id="allRoleInfo">
+        SELECT "role".id, "role".name
+        FROM teacher_schema.teacher AS "user" INNER JOIN
+        (role_schema.teatcher_role AS teacher_role INNER JOIN role_schema.role AS "role"
+        ON (teacher_role.role_id = "role".id)) AS "role" ON ("role".teatcher_id = "user".id)
+    </sql>
+    <select id="getRolesByLogin" parameterType="java.lang.String" resultMap="role">
+        <include refid="allRoleInfo"/>
+        WHERE login = #{login}
+    </select>
+    <select id="getRolesById" parameterType="java.lang.Integer" resultMap="role">
+        <include refid="allRoleInfo"/>
+        WHERE "user".id = #{id}
+    </select>
+    <select id="getRoleById" parameterType="java.lang.Integer" resultMap="role">
+        SELECT *
+        FROM role_schema.role
+        WHERE id = #{id}
+    </select>
+    <insert id="addRole" parameterType="java.lang.String">
+        INSERT INTO role_schema.role(name)
+        VALUES (#{role});
+    </insert>
+    <insert id="setRoleToUser" parameterType="map">
+      INSERT INTO role_schema.teatcher_role AS rolt_to_user
+      (
+        teatcher_id,
+        role_id
+      )
+      VALUES
+      (
+        #{id},
+        #{roleId}
+      )
+    </insert>
+    <delete id="remuveRoleUser" parameterType="map">
+        DELETE FROM role_schema.teatcher_role
+        WHERE teatcher_id = #{userId} AND role_id = #{role.id}
+    </delete>
+    <delete id="deleteAllRolesUser" parameterType="java.lang.Integer">
+        DELETE FROM role_schema.teatcher_role
+        WHERE teatcher_id = #{id}
+    </delete>
+</mapper>

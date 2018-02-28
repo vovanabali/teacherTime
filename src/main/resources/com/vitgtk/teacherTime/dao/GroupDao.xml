@@ -1,0 +1,29 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vitgtk.teacherTime.dao.GroupDao">
+    <sql id="getGroupInfo">
+        SELECT
+        group_info.id,
+        group_info.number
+        FROM teacher_schema."group" AS group_info
+    </sql>
+    <resultMap id="group" type="com.vitgtk.teacherTime.domain.Group">
+        <id column="id" property="id"/>
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+    </resultMap>
+    <select id="getAllGroups" resultMap="group">
+        <include refid="getGroupInfo"/>
+    </select>
+    <insert id="addGroup" parameterType="com.vitgtk.teacherTime.domain.Group">
+        INSERT INTO teacher_schema."group" AS group_number (number)
+        VALUES (#{groupNamber})
+    </insert>
+    <delete id="remuveGroup" parameterType="com.vitgtk.teacherTime.domain.Group">
+        DELETE FROM teacher_schema."group" AS group_info
+        WHERE group_info.id = #{groupNamber}
+    </delete>
+    <select id="getGroup">
+        <include refid="getGroupInfo"/>
+        WHERE group_info.id = #{id}
+    </select>
+</mapper>

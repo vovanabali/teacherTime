@@ -1,0 +1,25 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vitgtk.teacherTime.dao.LessonDao">
+    <resultMap id="lesson" type="com.vitgtk.teacherTime.domain.Lesson">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+    </resultMap>
+    <select id="getAllLessons" resultMap="lesson">
+        SELECT *
+        FROM lesson_schema.lesson
+    </select>
+    <insert id="addLesson" parameterType="com.vitgtk.teacherTime.domain.Lesson">
+        INSERT INTO lesson_schema.lesson (name)
+        VALUES (#{NAME})
+    </insert>
+    <delete id="remuveLesson" parameterType="com.vitgtk.teacherTime.domain.Lesson">
+        DELETE FROM lesson_schema.lesson
+        WHERE id = #{id}
+    </delete>
+    <select id="getLesson" parameterType="com.vitgtk.teacherTime.domain.User" resultMap="lesson">
+        SELECT lesson.*
+        FROM lesson_schema.lesson AS lesson LEFT JOIN (lesson_schema.teacher_leson
+        LEFT JOIN teacher_schema.teacher ON teacher_leson.teacher_id = teacher.id) AS teacher_lesson
+        ON lesson.id = teacher_lesson.lesson_id
+    </select>
+</mapper>

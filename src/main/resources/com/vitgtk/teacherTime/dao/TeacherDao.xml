@@ -1,0 +1,62 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vitgtk.teacherTime.dao.TeacherDao">
+    <resultMap id="teacher" type="com.vitgtk.teacherTime.domain.Teacher">
+        <id column="u_id"/>
+        <association property="teacher" javaType="com.vitgtk.teacherTime.domain.User">
+            <id column="u_id" property="id"/>
+            <result column="u_name" property="name"/>
+            <result column="u_surname" property="surname"/>
+            <result column="u_patronymic" property="patronymic"/>
+            <result column="u_password" property="password"/>
+            <result column="u_mail" property="mail"/>
+            <result column="u_login" property="login"/>
+            <collection property="roles" javaType="List" ofType="com.vitgtk.teacherTime.domain.Role">
+                <id column="r_id" property="id"/>
+                <result column="r_name" property="name"/>
+            </collection>
+        </association>
+        <collection property="lessons" ofType="com.vitgtk.teacherTime.domain.TeachersLesson">
+            <id column="tl_id" property="id"/>
+            <result column="tl_all_time" property="allTime"/>
+            <association property="lesson" javaType="com.vitgtk.teacherTime.domain.Lesson">
+                <id column="les_id" property="id"/>
+                <result column="les_name" property="name"/>
+            </association>
+            <collection property="exactTime" ofType="com.vitgtk.teacherTime.domain.LessonTime">
+                <id column="time_id" property="id"/>
+                <result column="time_date" property="date"/>
+                <result column="time_count" property="timeCount"/>
+                <result column="ls_info" property="info"/>
+            </collection>
+        </collection>
+    </resultMap>
+    <sql id="teacherSelect">
+        SELECT
+          "user".id                 AS u_id,
+          "user".name               AS u_name,
+          "user".mail               AS u_mail,
+          "user".password           AS u_password,
+          "user".patronymic         AS u_patronymic,
+          "user".surname            AS u_surname,
+          "user".login              AS u_login,
+          "role".id                 AS r_id,
+          "role".name               AS r_name,
+          teacher_lesson.id         AS tl_id,
+          teacher_lesson.teacher_id AS tlt_id,
+          teacher_lesson.all_time   AS tl_all_time,
+          lesson.id                 AS les_id,
+          lesson.name               AS les_name,
+          lesson_time.id            AS time_id,
+          lesson_time.lesson_date   AS time_date,
+          lesson_time.time_count    AS time_count,
+          lesson_time.info          AS ls_info
+        FROM teacher_schema.teacher AS "user"
+        INNER JOIN (role_schema.teatcher_role AS teacher_role INNER JOIN role_schema.role AS "role" ON (teacher_role.role_id = "role".id)) AS "role" ON ("role".teatcher_id = "user".id)
+        INNER JOIN lesson_schema.teacher_leson AS teacher_lesson ON ("user".id = teacher_lesson.teacher_id)
+        INNER JOIN lesson_schema.lesson AS lesson ON (lesson.id = teacher_lesson.lesson_id)
+        INNER JOIN lesson_schema.lesson_time AS lesson_time ON (teacher_lesson.id = lesson_time.teacher_lesson_id)
+    </sql>
+    <select id="getAllTeachers" resultMap="teacher">
+        <include refid="teacherSelect"/>
+    </select>
+</mapper>
