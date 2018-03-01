@@ -1,9 +1,11 @@
 package com.vitgtk.teacherTime.web.controllers.autorization;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vitgtk.teacherTime.domain.Teacher;
 import com.vitgtk.teacherTime.domain.User;
 import com.vitgtk.teacherTime.service.teacher.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -22,17 +24,6 @@ import java.util.List;
 @Controller
 @RequestMapping("/")
 public class AutorizationController {
-
-    @Autowired
-    private TeacherService teacherService;
-
-    @RequestMapping(method = RequestMethod.GET, value = "/teacherInJson")
-    @ResponseBody
-    public List<Teacher> teacherInJson() {
-        List<Teacher> teacher = teacherService.getAllTeachers();
-        System.out.println();
-        return teacher;
-    }
 
     @RequestMapping(method = RequestMethod.GET, value = "/exit")
     public String exit(HttpServletRequest request, HttpServletResponse response) {
