@@ -14,10 +14,4 @@ public class UserController {
     public String getMainPage() {
         return "teachingload";
     }
-
-    @ExceptionHandler(NoHandlerFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public String handle(NoHandlerFoundException ex) {
-        return "404Page";
-    }
 }
