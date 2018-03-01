@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class LessonTimeServiceImpl implements LessonTimeDao {
+public class LessonTimeServiceImpl implements LessonTimeService {
     @Autowired
     private LessonTimeDao lessonTimeDao;
 
@@ -31,5 +31,10 @@ public class LessonTimeServiceImpl implements LessonTimeDao {
     @Override
     public void remuveLessonTime(LessonTime lessonTime) {
         lessonTimeDao.remuveLessonTime(lessonTime);
+    }
+
+    @Override
+    public void updateLessonTime(LessonTime lessonTime) {
+        lessonTimeDao.updateLEssonTime(lessonTime);
     }
 }

@@ -17,4 +17,6 @@ public interface TeacherLessonDao {
     void deleteTeacherLesson(TeachersLesson teachersLesson);
 
     void deleteAllTeacherLessons(User user);
+
+    void updateTeacherLessons(TeachersLesson teachersLesson);
 }

@@ -23,4 +23,15 @@
         DELETE FROM lesson_schema.lesson_time
         WHERE id = #{id}
     </delete>
+    <update id="updateLEssonTime" parameterType="com.vitgtk.teacherTime.domain.LessonTime">
+        UPDATE
+          lesson_schema.lesson_time
+        SET
+          lesson_date = #{date},
+          info = #{info},
+          teacher_lesson_id = #{teacher_lesson_id},
+          time_count = #{timeCount}
+        WHERE
+          id = #{id}
+    </update>
 </mapper>

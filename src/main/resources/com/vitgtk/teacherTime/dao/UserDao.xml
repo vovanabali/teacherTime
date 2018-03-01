@@ -48,4 +48,17 @@
     <select id="getAllUsers" resultMap="user">
         <include refid="userInfoWithRole"/>
     </select>
+    <update id="updateUser" parameterType="com.vitgtk.teacherTime.domain.User">
+        UPDATE
+          teacher_schema.teacher
+        SET
+          name = #{name},
+          surname = #{surname},
+          patronymic = #{patronymic},
+          password = ${password},
+          mail = #{mail},
+          login = #{login}
+        WHERE
+          id = #{id}
+    </update>
 </mapper>

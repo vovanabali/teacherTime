@@ -37,4 +37,9 @@ public class TeacherLessonServiceImpl implements TeacherLessonService {
     public void deleteAllTeacherLessons(User user) {
         teacherLessonDao.deleteAllTeacherLessons(user);
     }
+
+    @Override
+    public void updateTeacherLessons(TeachersLesson teachersLesson) {
+        teacherLessonDao.updateTeacherLessons(teachersLesson);
+    }
 }

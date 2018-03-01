@@ -12,4 +12,8 @@ public interface TeacherService {
     Teacher getTeacherByLogin(String login);
 
     void remuveTeacher(Teacher teacher);
+
+    void updateTeacherInfo(Teacher teacher );
+
+    void updateTeacherExTime(Teacher teacher);
 }

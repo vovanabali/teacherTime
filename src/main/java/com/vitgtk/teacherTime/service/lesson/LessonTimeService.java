@@ -13,4 +13,6 @@ public interface LessonTimeService {
     void addLessonTime(LessonTime lessonTime);
 
     void remuveLessonTime(LessonTime lessonTime);
+
+    void updateLessonTime(LessonTime lessonTime);
 }

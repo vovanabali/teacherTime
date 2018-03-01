@@ -55,4 +55,14 @@
         DELETE FROM lesson_schema.teacher_leson
         WHERE teacher_id = #{id};
     </delete>
+    <update id="updateTeacherLessons" parameterType="com.vitgtk.teacherTime.domain.TeachersLesson">
+        UPDATE
+          lesson_schema.teacher_leson
+        SET
+          lesson_id = #{lesson.id},
+          group_id = #{group.id},
+          all_time = #{allTime}
+        WHERE
+          id = #{id}
+    </update>
 </mapper>

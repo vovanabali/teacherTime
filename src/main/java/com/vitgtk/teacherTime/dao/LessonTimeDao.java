@@ -18,4 +18,6 @@ public interface LessonTimeDao {
     void addLessonTime(LessonTime lessonTime);
 
     void remuveLessonTime(LessonTime lessonTime);
+
+    void updateLessonTime(LessonTime lessonTime);
 }

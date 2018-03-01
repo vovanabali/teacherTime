@@ -1,18 +1,20 @@
 package com.vitgtk.teacherTime.web.controllers.user;
 
+import com.vitgtk.teacherTime.dao.LessonTimeDao;
 import com.vitgtk.teacherTime.domain.*;
 import com.vitgtk.teacherTime.service.lesson.GroupService;
 import com.vitgtk.teacherTime.service.lesson.LessonService;
+import com.vitgtk.teacherTime.service.lesson.LessonTimeService;
 import com.vitgtk.teacherTime.service.role.RoleService;
+import com.vitgtk.teacherTime.service.security.UserPropertiEditor;
 import com.vitgtk.teacherTime.service.teacher.TeacherService;
 import com.vitgtk.teacherTime.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -34,6 +36,9 @@ public class AdminController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private LessonTimeService lessonTimeService;
 
     @RequestMapping(method = RequestMethod.GET, value = "/teachingload")
     public String settings() {
@@ -76,13 +81,48 @@ public class AdminController {
         return userService.getAllUsers();
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/json/addTeacher")
+    @RequestMapping(method = RequestMethod.GET, value = "/json/addUser")
     @ResponseBody
-    public Boolean addNewTeacher(@Valid Teacher teacher, BindingResult bindingResult) {
-        if (!bindingResult.hasErrors()) {
-            return false;
-        } else {
+    public Boolean addNewUser(@RequestParam Teacher teacher) {
+        if (teacher.getTeacher() != null) {
+            userService.addUser(teacher.getTeacher());
             return true;
+        } else {
+            return false;
         }
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/json/updateTeacherLessonTime")
+    @ResponseBody
+    public Boolean updateTeacherLessonTime(@RequestParam Teacher teacher) {
+        if (teacher.getTeacher() != null) {
+            teacherService.updateTeacherExTime(teacher);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/json/updateTeacherInfo")
+    @ResponseBody
+    public Boolean updateTeacherInfo(@RequestParam Teacher teacher) {
+        if (teacher.getTeacher() != null) {
+            teacherService.updateTeacherExTime(teacher);
+            return true;
+        } else {
+            return false;
+        }
+    }
+    @RequestMapping(method = RequestMethod.GET, value = "/deleteUser")
+    @ResponseBody
+    public boolean deleteUser(@RequestParam int id) {
+        User user = new User();
+        user.setId(id);
+        return userService.remuveUser(user);
+    }
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.registerCustomEditor(Teacher.class, new UserPropertiEditor());
     }
 }

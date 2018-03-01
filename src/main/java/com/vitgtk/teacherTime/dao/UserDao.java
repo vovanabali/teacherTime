@@ -20,4 +20,6 @@ public interface UserDao {
     List<User> getAllUsersByGroup(Group group);
 
     List<User> getAllUsers();
+
+    void updateUser(User user);
 }

@@ -15,4 +15,6 @@ public interface TeacherLessonService {
     void deleteTeacherLesson(TeachersLesson teachersLesson);
 
     void deleteAllTeacherLessons(User user);
+
+    void updateTeacherLessons(TeachersLesson teachersLesson);
 }

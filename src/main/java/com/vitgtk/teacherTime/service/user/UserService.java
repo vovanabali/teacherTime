@@ -14,7 +14,7 @@ public interface UserService {
 
     void addUser(User user);
 
-    void remuveUser(User user);
+    boolean remuveUser(User user);
 
     List<User> getAllUsersByGroup(Group group);
 }

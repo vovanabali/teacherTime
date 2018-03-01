@@ -69,9 +69,4 @@ public class AppConfiguration extends WebMvcConfigurerAdapter {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(localeInterceptor());
     }
-
-    @InitBinder
-    public void initBinder(WebDataBinder binder) {
-        binder.registerCustomEditor(Teacher.class, new UserPropertiEditor());
-    }
 }
