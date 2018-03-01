@@ -35,7 +35,7 @@
       FROM lesson_schema.teacher_leson AS teacher_leson
       INNER JOIN lesson_schema.lesson AS les ON (les.id = teacher_leson.lesson_id)
       INNER JOIN teacher_schema."group" AS grup ON (teacher_leson.group_id = grup.id)
-      RIGHT JOIN lesson_schema.lesson_time AS lesson_time ON (lesson_time.teacher_lesson_id = teacher_leson.id)
+      LEFT JOIN lesson_schema.lesson_time AS lesson_time ON (lesson_time.teacher_lesson_id = teacher_leson.id)
     </sql>
     <select id="getTeacherLesson" parameterType="java.lang.Integer" resultMap="teacherLesson">
         <include refid="teacherLessonAll"/>

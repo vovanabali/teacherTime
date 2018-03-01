@@ -35,12 +35,12 @@
             <c:choose>
                 <c:when test="${isAnonimus}">
                     <li>
-                        <a href='/authorization'><spring:message code="NavBar.SingIn"/></a>
+                        <a href='/authorization' onclick="location.href='/authorization'"><spring:message code="NavBar.SingIn"/></a>
                     </li>
                 </c:when>
                 <c:otherwise>
                     <li>
-                        <a href='/exit'><spring:message code="NavBar.logout"/></a>
+                        <a href='/exit' onclick="location.href='/exit'"><spring:message code="NavBar.logout"/></a>
                     </li>
                 </c:otherwise>
             </c:choose>

@@ -37,6 +37,7 @@ public class TeacherController {
             teacher = teacherService.getTeacherByLogin(authentication.getName());
             teacher.getTeacher().setPassword("");
         }
+        System.out.println();
         return teacher;
     }
 }

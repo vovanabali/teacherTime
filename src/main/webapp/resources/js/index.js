@@ -1,13 +1,16 @@
+/*
+*  set url window.history.pushState("object or string", "Title", "/new-url");
+* */
 var teacher = null;
 var teachers = null;
 /*--------------------------------------- tabs ----------------------------------*/
 var loadTabs = function() {
     var cnt = document.getElementById('cnt-tabs');
     var cntBodyTabs = cnt.getElementsByTagName("div")[0];
-    months = [ 'september', 'october', 'november', 'december','january', 'february', 'march', 'april', 'may', 'june', 'july', 'august'];
-    months_rus = ['Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь','Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август'];
+    months = [ 'january', 'february', 'march', 'april', 'may', 'june', 'july', 'august','september', 'october', 'november', 'december'];
+    months_rus = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август','Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
     var tabsCount = new Date().getMonth() + 1;
-    for (var i = 0; i < tabsCount+4; ++i) {
+    for (var i = 0; i < tabsCount; ++i) {
         let input = document.createElement("input"),
             label = document.createElement("label");
         $(label).attr('title', months[i]);
@@ -24,7 +27,7 @@ var loadTabs = function() {
         cntBodyTabs.append(input);
         cntBodyTabs.append(label);
     }
-    for (var j = 0; j < tabsCount+4; ++j) {
+    for (var j = 0; j < tabsCount; ++j) {
         var section = document.createElement("section");
         $(section).attr('id', 'content-tab' + (j + 1));
         cntBodyTabs.appendChild(section);
@@ -51,7 +54,9 @@ var loadTabs = function() {
 /*------------------- table ----------------------*/
 var loadTable = function() {
     var tabsCount = new Date().getMonth() + 1;
-    for (var k = 0; k < tabsCount+5; k++) {
+    for (var k = 0; k < tabsCount; k++) {
+        var allTimeInfo = 0;
+        var exTimeinThisMonth = 0;
         var container = document.getElementsByClassName('cnt-body')[k];
         var body = container.getElementsByTagName("div")[0];
         var table = document.createElement('table');
@@ -90,7 +95,7 @@ var loadTable = function() {
                 }
                 if (i == 0 & j == 3) {
                     td.appendChild(document.createTextNode('Ост.на след.'));
-                    td.style.background = '#FFDAB9';
+                    td.style.background = '#fff700';
                     td.classList.add('no-edit');
                     td.classList.remove('yesEdit');
                 }
@@ -101,6 +106,11 @@ var loadTable = function() {
                 }
                 if (i == 0 & j > 3 & j <= 34) {
                     td.appendChild(document.createTextNode(j - 3));
+                    var tema_date = new Date(new Date().getFullYear(), k, j-4);
+                    var weekDay = tema_date.getDay() + 1;
+                    if (weekDay === 6 || weekDay === 7) {
+                        td.style.background = '#FFDAB9';
+                    }
                     td.classList.add('no-edit');
                     td.classList.remove('yesEdit');
                 }
@@ -138,7 +148,7 @@ var loadTable = function() {
                     td.classList.remove('yesEdit');
                 }
                 if (j == 3) {
-                    td.style.background = '#FFDAB9';
+                    td.style.background = '#fff700';
                 }
 
                 if (i > 1 && i < row-1) {
@@ -152,26 +162,27 @@ var loadTable = function() {
                     }
                     /* Всего часов */
                     if (j === 2) {
-                        td.appendChild(document.createTextNode(teacher.lessons[0].allTime));
+                        allTimeInfo += teacher.lessons[i-2].allTime;
+                        td.appendChild(document.createTextNode(teacher.lessons[i-2].allTime));
                     }
                     /* Осталось часов часов */
                     if (j === 3) {
-                        var tema_date = new Date(2018, k+9, 5);
+                        var tema_date = new Date(new Date().getFullYear(), k, 5);
                         var lenght = teacher.lessons[i-2].exactTime.length;
                         var ex_time = teacher.lessons[i-2].allTime;
                         for (var month = 0; month < lenght; month++) {
                             var lessonDate = new Date(teacher.lessons[i-2].exactTime[month].date);
                             console.log(tema_date.getMonth());
-                            if (lessonDate.getMonth() <= tema_date.getMonth() && tema_date.getMonth() < 9) {
+                            if (lessonDate.getMonth() <= tema_date.getMonth()) {
                                 ex_time -= teacher.lessons[i-2].exactTime[month].timeCount;
                             }
                         }
+                        exTimeinThisMonth += ex_time;
                         td.appendChild(document.createTextNode(ex_time));
                     }
                     /* Кол-во часов в этот день */
                     if (j < 35 && j > 3) {
-                        var tema_date = new Date(2018, k+9, j-3);
-                        console.log(tema_date);
+                        var tema_date = new Date(new Date().getFullYear(), k, j-3);
                         for (var month = 0; month < teacher.lessons[i-2].exactTime.length; month++) {
                             var lessonDate = new Date(teacher.lessons[i-2].exactTime[month].date);
                             if (tema_date.getMonth() === lessonDate.getMonth()) {
@@ -180,6 +191,10 @@ var loadTable = function() {
                                     td.appendChild(document.createTextNode(teacher.lessons[i-2].exactTime[month].timeCount));
                                 }
                             }
+                        }
+                        var weekDay = new Date(new Date().getFullYear(), k, j-4).getDay() + 1;
+                        if (weekDay === 6 || weekDay === 7) {
+                            td.style.background = '#FFDAB9';
                         }
                     }
                     /* ч за месяц */
@@ -195,10 +210,31 @@ var loadTable = function() {
                         td.appendChild(document.createTextNode(''));
                     }
                 }
+                if (i === row - 1 && j === 2) {
+                    td.appendChild(document.createTextNode(allTimeInfo));
+                }
+                if (i === row - 1 && j === 3) {
+                    td.appendChild(document.createTextNode(exTimeinThisMonth));
+                }
             }
         }
         body.appendChild(table);
     }
+};
+var addIngEditorOnTd = function() {
+    $('td.yesEdit').click(function(e) {
+        var t = e.target || e.srcElement;
+        var elm_name = t.tagName.toLowerCase();
+        if (elm_name == 'input') { return false; }
+        var val = $(this).html();
+        var text = '<input type="text" id="edit" value="' + val + '"/>';
+        $(this).empty().append(text);
+        $('#edit').focus();
+        $('#edit').blur(function() {
+            var val = $(this).val();
+            $(this).parent().empty().html(val);
+        })
+    })
 };
 $(function() {
     teachLoad();
@@ -227,21 +263,6 @@ $(function() {
         $('body').addClass(custom_class);
     });
 
-    $(function() {
-        $('td.yesEdit').click(function(e) {
-            var t = e.target || e.srcElement;
-            var elm_name = t.tagName.toLowerCase();
-            if (elm_name == 'input') { return false; }
-            var val = $(this).html();
-            var text = '<input type="text" id="edit" value="' + val + '"/>';
-            $(this).empty().append(text);
-            $('#edit').focus();
-            $('#edit').blur(function() {
-                var val = $(this).val();
-                $(this).parent().empty().html(val);
-            })
-        })
-    });
     $(window).keydown(function(event) {
         if (event.keyCode == 13) {
             $('#edit').blur();
@@ -296,6 +317,7 @@ var teachLoad = function () {
             teacher = json["responseJSON"];
             loadTabs();
             loadTable();
+            addIngEditorOnTd();
             console.log( "Teacher is load" );
         })
         .fail(function(ex) {
