@@ -30,7 +30,6 @@
     <div class='content settings'>
         <div class="wrapper">
             <h1>Настройки</h1>
-
         </div>
     </div>
     <div class='content adminPanel'>

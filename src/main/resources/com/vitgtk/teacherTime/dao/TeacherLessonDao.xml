@@ -2,6 +2,7 @@
 <mapper namespace="com.vitgtk.teacherTime.dao.TeacherLessonDao">
     <resultMap id="teacherLesson" type="com.vitgtk.teacherTime.domain.TeachersLesson">
         <id column="id" property="id"/>
+        <result column="lesson_all_time" property="allTime"/>
         <association property="lesson" javaType="com.vitgtk.teacherTime.domain.Lesson">
             <id column="lesson_id" property="id"/>
             <result column="lesson_name" property="name"/>
@@ -29,7 +30,8 @@
         lesson_time.lesson_date       AS lesson_time_date,
         lesson_time.time_count        AS lesson_time_count,
         lesson_time.info              AS lesson_time_info,
-        lesson_time.teacher_lesson_id AS lesson_time_teacher_lesson_id
+        lesson_time.teacher_lesson_id AS lesson_time_teacher_lesson_id,
+        teacher_leson.all_time        AS lesson_all_time
       FROM lesson_schema.teacher_leson AS teacher_leson
       INNER JOIN lesson_schema.lesson AS les ON (les.id = teacher_leson.lesson_id)
       INNER JOIN teacher_schema."group" AS grup ON (teacher_leson.group_id = grup.id)

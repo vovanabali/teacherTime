@@ -35,6 +35,6 @@ public class LessonTimeServiceImpl implements LessonTimeService {
 
     @Override
     public void updateLessonTime(LessonTime lessonTime) {
-        lessonTimeDao.updateLEssonTime(lessonTime);
+        lessonTimeDao.updateLessonTime(lessonTime);
     }
 }
