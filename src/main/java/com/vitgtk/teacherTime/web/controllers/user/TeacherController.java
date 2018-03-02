@@ -1,15 +1,15 @@
 package com.vitgtk.teacherTime.web.controllers.user;
 
 import com.vitgtk.teacherTime.domain.Teacher;
+import com.vitgtk.teacherTime.service.security.UserPropertiEditor;
 import com.vitgtk.teacherTime.service.teacher.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/teacher")
@@ -39,5 +39,17 @@ public class TeacherController {
         }
         System.out.println();
         return teacher;
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/json/saveInfo")
+    @ResponseBody
+    public Boolean getSaveInfo(@RequestParam Teacher teacher) {
+        System.out.println(teacher);
+        return true;
+    }
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.registerCustomEditor(Teacher.class, new UserPropertiEditor());
     }
 }

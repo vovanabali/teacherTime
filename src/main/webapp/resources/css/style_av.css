@@ -1,0 +1,406 @@
+/*---------------------------- authorization -------------------------------*/
+
+.body-authorization #line {
+    margin: 9% auto;
+    position: relative;
+    height: 3px;
+    width: 400px;
+    background-color: #4D565B;
+}
+
+.body-authorization #line.right::after {
+    content: '';
+    position: absolute;
+    left: 3px;
+    height: 3px;
+    background-color: #589CF7;
+    animation-name: left-to-right;
+    animation-duration: .4s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
+}
+
+.body-authorization #line.left::after {
+    content: '';
+    position: absolute;
+    right: 3px;
+    height: 3px;
+    background-color: #589CF7;
+    animation-name: right-to-left;
+    animation-duration: .4s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-in-out;
+}
+
+@keyframes left-to-right {
+    0% {
+        left: 0;
+        width: 0%;
+    }
+    50% {
+        width: 35%;
+    }
+    100% {
+        left: 100%;
+        width: 0%;
+    }
+}
+
+@keyframes right-to-left {
+    0% {
+        right: 0;
+        width: 0%;
+    }
+    50% {
+        width: 35%;
+    }
+    100% {
+        right: 100%;
+        width: 0%;
+    }
+}
+
+.body-authorization #line .circle-right,
+.body-authorization #line .circle-left {
+    position: absolute;
+    top: 50%;
+    transform: translate(0, -50%);
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    border: 3px solid #4D565B;
+    cursor: pointer;
+    background-color: #2A3436;
+    transition: all .3s ease;
+    z-index: 5;
+}
+
+.body-authorization #line .circle-right {
+    right: calc(-15px - 3px);
+}
+
+.body-authorization #line .circle-right ::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    text-align: center;
+    line-height: 45px;
+    font-size: 1em;
+    color: #2A3436;
+}
+
+.body-authorization #line .circle-right.active {
+    width: 120px;
+    height: 45px;
+    border-radius: 10px;
+    border-color: #589CF7;
+    transition: all .3s ease;
+}
+
+.body-authorization #line .circle-right.show::after {
+    content: 'Регистрация';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    text-align: center;
+    line-height: 45px;
+    font-size: 1em;
+    color: #fff;
+}
+
+.body-authorization #line .circle-left {
+    left: calc(-15px - 3px);
+}
+
+.body-authorization #line .circle-left ::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    text-align: center;
+    line-height: 45px;
+    font-size: 1em;
+    color: #2A3436;
+}
+
+.body-authorization #line .circle-left.active {
+    width: 100px;
+    height: 45px;
+    border-radius: 10px;
+    border-color: #589CF7;
+    transition: all .3s ease;
+}
+
+.body-authorization #line .circle-left.show::after {
+    content: 'Вход';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    text-align: center;
+    line-height: 45px;
+    font-size: 1em;
+    color: #fff;
+}
+
+.body-authorization #line-section>section {
+    height: 200px;
+    width: 33%;
+    margin: 0px auto;
+}
+
+.body-authorization #line-section #cnt-line2 {
+    width: 50%;
+}
+
+.body-authorization #cnt-line2 {
+    width: 50%;
+    display: none;
+}
+
+.body-authorization #cnt-line2 h1,
+.body-authorization #cnt-line1 h1 {
+    margin-top: -63px;
+    color: #a8a7a8;
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.8);
+}
+
+body.body-authorization,
+.login-submit,
+.login-submit:before,
+.login-submit:after,
+.registr-submit,
+.registr-submit:before,
+.registr-submit:after {
+    background: #373737 url("../img/bg.png") 0 0 repeat;
+}
+
+.body-authorization .login a {
+    color: #00a1d2;
+    text-decoration: none;
+}
+
+.body-authorization .login a:hover {
+    text-decoration: underline;
+}
+
+.body-authorization .login {
+    font: 14px/20px 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    color: #404040;
+    position: relative;
+    margin: 40px auto;
+    width: 400px;
+    padding-right: 32px;
+    font-weight: 300;
+    color: #a8a7a8;
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.8);
+}
+
+.body-authorization .registr {
+    font: 14px/20px 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    color: #404040;
+    position: relative;
+    margin: 40px auto;
+    width: 500px;
+    padding-right: 32px;
+    font-weight: 300;
+    color: #a8a7a8;
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.8);
+}
+
+.body-authorization .login p,
+.body-authorization .registr p {
+    margin: 0 0 10px;
+}
+
+.body-authorization .login input,
+.body-authorization .login button,
+.body-authorization .login label,
+.body-authorization .registr input,
+.body-authorization .registr button,
+.body-authorization .registr label {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    font-weight: 300;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.body-authorization .login input[type=text],
+.body-authorization .login input[type=password],
+.body-authorization .registr input[type=text] {
+    padding: 0 10px;
+    width: 300px;
+    height: 40px;
+    color: #bbb;
+    text-shadow: 1px 1px 1px black;
+    background: rgba(0, 0, 0, 0.16);
+    border: 0;
+    border-radius: 5px;
+    -webkit-box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.06);
+    box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.06);
+}
+
+.body-authorization .login input[type=text]:focus,
+.body-authorization .login input[type=password]:focus,
+.body-authorization .registr input[type=text]:focus {
+    color: white;
+    background: rgba(0, 0, 0, 0.1);
+    outline: 0;
+}
+
+.body-authorization .login label {
+    float: left;
+    width: 100px;
+    line-height: 40px;
+    padding-right: 10px;
+    font-weight: 100;
+    text-align: right;
+    letter-spacing: 1px;
+}
+
+.body-authorization .registr label {
+    float: left;
+    width: 200px;
+    line-height: 40px;
+    padding-right: 10px;
+    font-weight: 100;
+    text-align: right;
+    letter-spacing: 1px;
+}
+
+.body-authorization .forgot-password {
+    padding-left: 100px;
+    font-size: 13px;
+    font-weight: 100;
+    letter-spacing: 1px;
+}
+
+.body-authorization .login-submit,
+.body-authorization .registr-submit {
+    position: absolute;
+    top: 12px;
+    right: 0;
+    width: 48px;
+    height: 48px;
+    padding: 8px;
+    border-radius: 32px;
+    -webkit-box-shadow: 0 0 4px rgba(0, 0, 0, 0.35);
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.35);
+}
+
+.body-authorization .login-submit:before,
+.body-authorization .login-submit:after,
+.body-authorization .registr-submit:before,
+.body-authorization .registr-submit:after {
+    content: '';
+    z-index: 1;
+    position: absolute;
+}
+
+.body-authorization .login-submit:before,
+.body-authorization .registr-submit:before {
+    top: 28px;
+    left: -4px;
+    width: 4px;
+    height: 10px;
+    -webkit-box-shadow: inset 0 1px rgba(255, 255, 255, 0.06);
+    box-shadow: inset 0 1px rgba(255, 255, 255, 0.06);
+}
+
+.body-authorization .login-submit:after,
+.body-authorization .registr-submit:after {
+    top: -4px;
+    bottom: -4px;
+    right: -4px;
+    width: 36px;
+}
+
+.body-authorization .login-button,
+.body-authorization .registr-button {
+    position: relative;
+    z-index: 2;
+    width: 48px;
+    height: 48px;
+    padding: 0 0 48px;
+    /* Fix wrong positioning in Firefox 9 & older (bug 450418) */
+    text-indent: 120%;
+    white-space: nowrap;
+    overflow: hidden;
+    background: none;
+    border: 0;
+    outline: 0;
+    border-radius: 24px;
+    cursor: pointer;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.2), 0 1px rgba(255, 255, 255, 0.1);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.2), 0 1px rgba(255, 255, 255, 0.1);
+    /* Must use another pseudo element for the gradient background because Webkit */
+    /* clips the background incorrectly inside elements with a border-radius.     */
+}
+
+.body-authorization .login-button:before,
+.body-authorization .registr-button:before {
+    content: '';
+    position: absolute;
+    top: 5px;
+    bottom: 5px;
+    left: 5px;
+    right: 5px;
+    background: #00a2d3;
+    border-radius: 24px;
+    background-image: -webkit-linear-gradient(top, #00a2d3, #0d7796);
+    background-image: -moz-linear-gradient(top, #00a2d3, #0d7796);
+    background-image: -o-linear-gradient(top, #00a2d3, #0d7796);
+    background-image: linear-gradient(to bottom, #00a2d3, #0d7796);
+    -webkit-box-shadow: inset 0 0 0 1px #00a2d3, 0 0 0 5px rgba(0, 0, 0, 0.16);
+    box-shadow: inset 0 0 0 1px #00a2d3, 0 0 0 5px rgba(0, 0, 0, 0.16);
+}
+
+.body-authorization .login-button:active:before,
+.body-authorization .registr-button:active:before {
+    background: #0591ba;
+    background-image: -webkit-linear-gradient(top, #0591ba, #00a2d3);
+    background-image: -moz-linear-gradient(top, #0591ba, #00a2d3);
+    background-image: -o-linear-gradient(top, #0591ba, #00a2d3);
+    background-image: linear-gradient(to bottom, #0591ba, #00a2d3);
+}
+
+.body-authorization .login-button:after,
+.body-authorization .registr-button:after {
+    content: '';
+    position: absolute;
+    top: 15px;
+    left: 12px;
+    width: 25px;
+    height: 19px;
+    background: url("../images/arrow.png")0 0 no-repeat;
+}
+
+.body-authorization .error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: red;
+    font-size: 20px;
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.8);
+    margin: 10px auto;
+    background-color: #2A3436;
+    color: #ff3838;
+    width: 30%;
+    border-radius: 11px;
+    border: 3px solid #589CF7;
+}
+
+.body-authorization .error p {
+    margin: 8px;
+    text-shadow: 2px 8px 6px rgba(0, 0, 0, 0.2), 0px -5px 35px rgba(255, 255, 255, 0.3);
+}

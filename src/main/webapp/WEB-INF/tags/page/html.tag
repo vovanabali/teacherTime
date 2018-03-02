@@ -9,6 +9,7 @@
 <%@ attribute name="bodyClass" type="java.lang.String" description="String" required="true" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="tag" tagdir="/WEB-INF/tags/page" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -18,6 +19,9 @@
     <link rel='stylesheet prefetch'
           href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
     <spring:url value="/resources/css/style.css" var="style"/>
+    <security:authorize access="isAnonymous()">
+        <spring:url value="/resources/css/style_av.css" var="style"/>
+    </security:authorize>
     <link rel="stylesheet" href="${style}">
 </head>
 <body class="${bodyClass}">
@@ -25,5 +29,7 @@
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
 <spring:url value="/resources/js/index.js" var="indexJs"/>
 <script src="${indexJs}"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue-resource@1.4.0"></script>
 </body>
 </html>

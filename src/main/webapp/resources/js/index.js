@@ -3,8 +3,12 @@
 * */
 var teacher = null;
 var teachers = null;
+var users = null;
+var lessons = null;
 /*--------------------------------------- tabs ----------------------------------*/
 var loadTabs = function() {
+    loadLessons();
+    usersLoad();
     var cnt = document.getElementById('cnt-tabs');
     var cntBodyTabs = cnt.getElementsByTagName("div")[0];
     months = [ 'january', 'february', 'march', 'april', 'may', 'june', 'july', 'august','september', 'october', 'november', 'december'];
@@ -44,6 +48,7 @@ var loadTabs = function() {
             $(button).attr({
                 id: 'save' + (i + 1),
                 name: 'save' + (i + 1),
+                onClick: "saveLessons(this.id.replace('save',''))"
             });
             return button;
         }
@@ -158,7 +163,13 @@ var loadTable = function() {
                     }
                     /* Номер группы */
                     if (j === 1) {
+                        var input = document.createElement('input');
+                        $(input).attr({
+                            type: 'hidden',
+                            value: teacher.lessons[i-2].group.id
+                        });
                         td.appendChild(document.createTextNode(teacher.lessons[i-2].group.groupNamber));
+                        td.appendChild(input);
                     }
                     /* Всего часов */
                     if (j === 2) {
@@ -324,3 +335,343 @@ var teachLoad = function () {
             console.log(ex);
         });
 };
+
+var usersLoad = function () {
+    var json = $.getJSON( "/admin/json/users", function() {})
+        .done(function() {
+            users = json["responseJSON"];
+            console.log( "Users is load" );
+        })
+        .fail(function(ex) {
+            console.log(ex);
+        });
+};
+var loadLessons = function () {
+    var json = $.getJSON( "/admin/json/lessons", function() {})
+        .done(function() {
+            lessons = json["responseJSON"];
+            console.log( "Teacher is load" );
+        })
+        .fail(function(ex) {
+            console.log(ex);
+        });
+};
+var tableToJSON = function (i) {
+    var myTableArray = [];
+    $("#content-tab"+i).find(" table tr").each(function() {
+        var arrayOfThisRow = [];
+        var tableData = $(this).find('td');
+        if (tableData.length > 0) {
+            tableData.each(function() { arrayOfThisRow.push($(this).text()); });
+            myTableArray.push(arrayOfThisRow);
+        }
+    });
+    return myTableArray.slice(2);
+};
+
+var queryAddTeacherTime = function (tableToJSON, month) {
+    var user = teacher.teacher;
+    var json = {
+        teacher: {
+            id: user.id,
+            name: user.name,
+            surname: user.surname,
+            patronymic: user.patronymic,
+            roles: user.roles,
+            password: user.password,
+            mail: user.mail,
+            login: user.login
+        },
+        lessons: getLessons(tableToJSON, month)
+    };
+    return json;
+};
+
+var getLessons = function(tableToJSON, month) {
+    var arrayLessons = [];
+    for(var i = 0; i < tableToJSON.length; i++) {
+        var exTime = [];
+        for(var j = 4; j < tableToJSON[i].length; j++) {
+            if (tableToJSON[i][j] !== "") {
+                exTime[exTime.length]= {
+                    id: 0,
+                    date: new Date(new Date().getFullYear(),month,j).getTime(),
+                    timeCount: parseInt(tableToJSON[i][j]),
+                    info: null,
+                    teacher_lesson_id: teacher.lessons[i].teacherId
+                };
+            }
+        }
+        var lesson = {
+            id: 3,
+            teacherId: teacher.teacher.id,
+            lesson: {
+                id: 0,
+                name: tableToJSON[i][0]
+            },
+            group: {
+                id: 0,
+                name: tableToJSON[i][1]
+            },
+            allTime: tableToJSON[i][2],
+            exactTime: exTime
+        };
+        arrayLessons[arrayLessons.length] = lesson;
+    }
+    return arrayLessons;
+};
+
+var saveLessons = function (month) {
+    var teacher = queryAddTeacherTime(tableToJSON(parseInt(month)), parseInt(month));
+    console.log(teacher);
+    console.log(JSON.stringify(teacher));
+    var json = $.get( "/teacher/json/saveInfo?teacher="+encodeURIComponent(JSON.stringify(teacher)), function() {})
+        .done(function() {
+            console.log( "Teacher is load" );
+        })
+        .fail(function(ex) {
+            console.log(ex);
+        });
+};
+/*------------------------------------------- adminPanel ---------------------------------*/
+$(function() {
+    var adminPanelCnt = document.getElementById('id-adminPanel');
+    var adminPanelTags = adminPanelCnt.getElementsByTagName('div')[1];
+    var textElement = ['Работа с пользователями', 'Работа с предметами', 'Работа с группами'];
+    var nameElement = ['Work_with_users', 'Working_with_objects', 'Working_with_groups'];
+    for (var i = 2; i >= 0; --i) {
+        let input = document.createElement("input"),
+            label = document.createElement("label");
+        $(label).attr('title', nameElement[i]);
+        label.append(document.createTextNode(textElement[i]));
+        $(input).attr({
+            id: 'adminTabs' + (i),
+            type: 'radio',
+            name: 'adminTabs'
+        });
+        if (!i) {
+            $(input).attr('checked', 'checked');
+        }
+        $(label).attr('for', 'adminTabs' + (i));
+        adminPanelTags.prepend(label);
+        adminPanelTags.prepend(input);
+    }});
+var adminWok = function() {
+    new Vue({
+        el: '#app',
+        data: {
+            searchValue: '',
+            row: {}
+        },
+        methods: {
+            del(index) {
+                this.row.data.splice(index, 1)
+                console.log({
+                    'id': index
+                })
+            },
+            save(index) {
+                console.log('hello')
+                console.log(this.row.data[index])
+                let result = {}
+                for (let i = 0; i < this.row.data[index].length; i++) {
+                    result = this.row.data[index].map(item => {
+                        return { 'value': item.value }
+                    })
+                }
+                console.log(result)
+            },
+            add() {
+                this.row.data.push(
+                    [{ value: 'text', state: false }, { value: 'text', state: false }, { value: 'text', state: false }, { value: 'text', state: false }, { value: 'text', state: false }, { value: 'text', state: false }, { value: 'text', state: false }])
+            },
+            search() {
+                for (let i = 0; i < this.row.data.length; i++) {
+                    let resultSearch = []
+                    for (let index = 0; index < this.row.data[i].length; index++) {
+                        if (this.row.data[i][index].value == this.searchValue) {
+                            resultSearch.push(this.row.data[i])
+                        }
+                        this.row.data = resultSearch
+                    }
+                    console.log(resultSearch)
+                }
+            },
+            remove() {
+                console.log(this.row);
+                for (let i = 0; i < this.row.data.length; i++) {
+                    for (let index = 0; index < this.row.data[i].length; index++) {
+                        this.row.data[i][index].state = false;
+                    }
+                }
+            }
+        },
+        created() {
+            if (users != null) {
+                var array = [];
+                for(var i = 0; i < users.length; i++) {
+                    array[array.length] = [
+                        {value: users[i].name},
+                        {value: users[i].surname},
+                        {value: users[i].patronymic},
+                        {value: users[i].mail},
+                        {value: users[i].login},
+                        {value: ""},
+                        {value: users[i].roles[0].name}
+                    ]
+                }
+                let req = {
+                    data: array
+                }
+                for (let i = 0; i < req.data.length; i++) {
+                    for (let index = 0; index < req.data[i].length; index++) {
+                        req.data[i][index].state = false;
+                    }
+                }
+                this.row = req;
+            }
+        }
+    })
+    new Vue({
+        el: '#app-2',
+        data: {
+            searchValue: '',
+            row: {}
+        },
+        methods: {
+            del(index) {
+                this.row.data.splice(index, 1)
+                console.log({
+                    'id': index
+                })
+            },
+            save(index) {
+                console.log('hello')
+                console.log(this.row.data[index])
+                let result = {}
+                for (let i = 0; i < this.row.data[index].length; i++) {
+                    result = this.row.data[index].map(item => {
+                        return { 'value': item.value }
+                    })
+                }
+                console.log(result)
+            },
+            add() {
+                this.row.data.push(
+                    [{ value: 'text', state: false }, { value: 'text', state: false }])
+            },
+            search() {
+                for (let i = 0; i < this.row.data.length; i++) {
+                    let resultSearch = []
+                    for (let index = 0; index < this.row.data[i].length; index++) {
+                        if (this.row.data[i][index].value == this.searchValue) {
+                            resultSearch.push(this.row.data[i])
+                        }
+                        this.row.data = resultSearch
+                    }
+                    console.log(resultSearch)
+                }
+            },
+            remove() {
+                console.log(this.row)
+                for (let i = 0; i < this.row.data.length; i++) {
+                    for (let index = 0; index < this.row.data[i].length; index++) {
+                        this.row.data[i][index].state = false;
+                    }
+                }
+            }
+        },
+        created() {
+            var arr = [];
+            if (lessons !== null) {
+                for (var i = 0; i < lessons.length; i++) {
+                    arr[arr.length] = [
+                        {value: lessons[i].name}
+                    ]
+                }
+                let req = {
+                    data: arr
+                }
+                for (let i = 0; i < req.data.length; i++) {
+                    for (let index = 0; index < req.data[i].length; index++) {
+                        req.data[i][index].state = false;
+                    }
+                }
+                this.row = req;
+            }
+        }
+    });
+    new Vue({
+        el: '#app-3',
+        data: {
+            searchValue: '',
+            row: {}
+        },
+        methods: {
+            del(index) {
+                this.row.data.splice(index, 1)
+                console.log({
+                    'id': index
+                })
+            },
+            save(index) {
+                console.log('hello')
+                console.log(this.row.data[index])
+                let result = {}
+                for (let i = 0; i < this.row.data[index].length; i++) {
+                    result = this.row.data[index].map(item => {
+                        return { 'value': item.value }
+                    })
+                }
+                console.log(result)
+            },
+            add() {
+                this.row.data.push(
+                    [{ value: 'text', state: false }, { value: 'text', state: false }])
+            },
+            search() {
+                for (let i = 0; i < this.row.data.length; i++) {
+                    let resultSearch = []
+                    for (let index = 0; index < this.row.data[i].length; index++) {
+                        if (this.row.data[i][index].value == this.searchValue) {
+                            resultSearch.push(this.row.data[i])
+                        }
+                        this.row.data = resultSearch
+                    }
+                    console.log(resultSearch)
+                }
+            },
+            remove() {
+                console.log(this.row)
+                for (let i = 0; i < this.row.data.length; i++) {
+                    for (let index = 0; index < this.row.data[i].length; index++) {
+                        this.row.data[i][index].state = false;
+                    }
+                }
+            }
+        },
+        created() {
+            let req = {
+                data: [
+                    [{ value: 'text' }, { value: 'text' }],
+                    [{ value: 'text' }, { value: 'text' }],
+                    [{ value: 'text' }, { value: 'text' }]
+                ]
+            }
+            for (let i = 0; i < req.data.length; i++) {
+                for (let index = 0; index < req.data[i].length; index++) {
+                    req.data[i][index].state = false;
+                }
+            }
+            this.row = req;
+        }
+    });
+};
+
+var intId = setInterval(allIsLoad, 500);
+function allIsLoad() {
+    if(users!==null && lessons != null) {
+        clearInterval(intId);
+        adminWok();
+    }
+}

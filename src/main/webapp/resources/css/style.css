@@ -7,7 +7,7 @@ body {
     color: #fff;
     font-family: 'Roboto', sans-serif;
     position: relative;
-    background: #555 url("../images/menu-bg.jpg") repeat;
+    background: #373737 url(../img/bg.png) 0 0 repeat;
     transform: translateX(0px);
     transition: transform 800ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
@@ -168,6 +168,13 @@ body.nav_is_visible .menu {
     transition: all 600ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
+.adminPanel,
+.settings,
+.tables,
+.home {
+    height: 59em;
+}
+
 .home_is_visible .home .wrapper,
 .tables_is_visible .tables .wrapper,
 .settings_is_visible .settings .wrapper,
@@ -187,30 +194,18 @@ body.nav_is_visible .menu {
 }
 
 .tabs>section,
-#id-adminPanel div.cnt-body>section {
+#id-adminPanel div.cnt-body>div {
     display: none;
     padding: 15px;
     background: #fff;
     border: 1px solid #ddd;
 }
 
-.tabs>section>p {
-    margin: 0 0 5px;
-    line-height: 1.5;
-    color: #383838;
-    /* анимация */
-    -webkit-animation-duration: 1s;
-    animation-duration: 1s;
-    -webkit-animation-fill-mode: both;
-    animation-fill-mode: both;
-    -webkit-animation-name: fadeIn;
-    animation-name: fadeIn;
-}
-
 
 /* Прячем чекбоксы */
 
-.tabs>input {
+.tabs>input,
+#id-adminPanel div.cnt-body>input {
     display: none;
     position: absolute;
 }
@@ -218,7 +213,8 @@ body.nav_is_visible .menu {
 
 /* Стили переключателей вкладок (табов) */
 
-.tabs>label {
+.tabs>label,
+#id-adminPanel div.cnt-body>label {
     display: inline-block;
     margin: 0 0 -2px;
     /*padding: 15px 31.35px;*/
@@ -235,7 +231,8 @@ body.nav_is_visible .menu {
 
 /*вкладки при наведении */
 
-.tabs>label:hover {
+.tabs>label:hover,
+#id-adminPanel div.cnt-body>label:hover {
     color: #888;
     cursor: pointer;
 }
@@ -243,7 +240,8 @@ body.nav_is_visible .menu {
 
 /* Стили для активной вкладки */
 
-.tabs>input:checked+label {
+.tabs>input:checked+label,
+#id-adminPanel div.cnt-body>input:checked+label {
     color: #555;
     border-top: 3px solid #009933;
     border-bottom: 3px solid #fff;
@@ -264,7 +262,10 @@ body.nav_is_visible .menu {
 #tab9:checked~#content-tab9,
 #tab10:checked~#content-tab10,
 #tab11:checked~#content-tab11,
-#tab12:checked~#content-tab12 {
+#tab12:checked~#content-tab12,
+#adminTabs1:checked~#cnt-adminTabs1,
+#adminTabs2:checked~#cnt-adminTabs2,
+#adminTabs0:checked~#cnt-adminTabs0 {
     display: block;
 }
 
@@ -273,6 +274,11 @@ body.nav_is_visible .menu {
 
 table {
     border: 1px solid #000000;
+}
+
+#admin-section table {
+    padding: 2px 8px;
+    border: 0px;
 }
 
 .cnt-header {
@@ -296,7 +302,8 @@ table {
     border: 1px solid #000000;
 }
 
-.cnt-table table td input {
+.cnt-table table td input,
+#admin-section table input {
     width: 80px;
     height: 35px;
     margin: -13px;
@@ -336,416 +343,271 @@ table {
 }
 
 
-/*---------------------------- authorization -------------------------------*/
-
-#line {
-    margin: 9% auto;
-    position: relative;
-    height: 3px;
-    width: 400px;
-    background-color: #4D565B;
-}
-
-#line.right::after {
-    content: '';
-    position: absolute;
-    left: 3px;
-    height: 3px;
-    background-color: #589CF7;
-    animation-name: left-to-right;
-    animation-duration: .4s;
-    animation-fill-mode: forwards;
-    animation-timing-function: ease-in-out;
-}
-
-#line.left::after {
-    content: '';
-    position: absolute;
-    right: 3px;
-    height: 3px;
-    background-color: #589CF7;
-    animation-name: right-to-left;
-    animation-duration: .4s;
-    animation-fill-mode: forwards;
-    animation-timing-function: ease-in-out;
-}
-
-@keyframes left-to-right {
-    0% {
-        left: 0;
-        width: 0%;
-    }
-    50% {
-        width: 35%;
-    }
-    100% {
-        left: 100%;
-        width: 0%;
-    }
-}
-
-@keyframes right-to-left {
-    0% {
-        right: 0;
-        width: 0%;
-    }
-    50% {
-        width: 35%;
-    }
-    100% {
-        right: 100%;
-        width: 0%;
-    }
-}
-
-#line .circle-right,
-#line .circle-left {
-    position: absolute;
-    top: 50%;
-    transform: translate(0, -50%);
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
-    border: 3px solid #4D565B;
-    cursor: pointer;
-    background-color: #2A3436;
-    transition: all .3s ease;
-    z-index: 5;
-}
-
-#line .circle-right {
-    right: calc(-15px - 3px);
-}
-
-#line .circle-right ::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    text-align: center;
-    line-height: 45px;
-    font-size: 1em;
-    color: #2A3436;
-}
-
-#line .circle-right.active {
-    width: 120px;
-    height: 45px;
-    border-radius: 10px;
-    border-color: #589CF7;
-    transition: all .3s ease;
-}
-
-#line .circle-right.show::after {
-    content: 'Регистрация';
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    text-align: center;
-    line-height: 45px;
-    font-size: 1em;
-    color: #fff;
-}
-
-#line .circle-left {
-    left: calc(-15px - 3px);
-}
-
-#line .circle-left ::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    text-align: center;
-    line-height: 45px;
-    font-size: 1em;
-    color: #2A3436;
-}
-
-#line .circle-left.active {
-    width: 100px;
-    height: 45px;
-    border-radius: 10px;
-    border-color: #589CF7;
-    transition: all .3s ease;
-}
-
-#line .circle-left.show::after {
-    content: 'Вход';
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    text-align: center;
-    line-height: 45px;
-    font-size: 1em;
-    color: #fff;
-}
-
-#line-section>section {
-    height: 200px;
-    width: 33%;
-    margin: 0px auto;
-}
-
-#line-section #cnt-line2 {
-    width: 50%;
-}
-
-#cnt-line2 {
-    width: 50%;
-    display: none;
-}
-
-#cnt-line2 h1,
-#cnt-line1 h1 {
-    margin-top: -63px;
-    color: #a8a7a8;
-    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.8);
-}
-
-body.body-authorization,
-.login-submit,
-.login-submit:before,
-.login-submit:after,
-.registr-submit,
-.registr-submit:before,
-.registr-submit:after {
-    background: #373737 url("../img/bg.png") 0 0 repeat;
-}
-
-.login a {
-    color: #00a1d2;
-    text-decoration: none;
-}
-
-.login a:hover {
-    text-decoration: underline;
-}
-
-.login {
-    font: 14px/20px 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    color: #404040;
-    position: relative;
-    margin: 40px auto;
-    width: 400px;
-    padding-right: 32px;
-    font-weight: 300;
-    color: #a8a7a8;
-    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.8);
-}
-
-.registr {
-    font: 14px/20px 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    color: #404040;
-    position: relative;
-    margin: 40px auto;
-    width: 500px;
-    padding-right: 32px;
-    font-weight: 300;
-    color: #a8a7a8;
-    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.8);
-}
-
-.login p,
-.registr p {
-    margin: 0 0 10px;
-}
-
-.login input,
-.login button,
-.login label,
-.registr input,
-.registr button,
-.registr label {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    font-size: 15px;
-    font-weight: 300;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-}
-
-.login input[type=text],
-.login input[type=password],
-.registr input[type=text] {
-    padding: 0 10px;
-    width: 300px;
-    height: 40px;
-    color: #bbb;
-    text-shadow: 1px 1px 1px black;
-    background: rgba(0, 0, 0, 0.16);
-    border: 0;
-    border-radius: 5px;
-    -webkit-box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.06);
-    box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.06);
-}
-
-.login input[type=text]:focus,
-.login input[type=password]:focus,
-.registr input[type=text]:focus {
-    color: white;
-    background: rgba(0, 0, 0, 0.1);
-    outline: 0;
-}
-
-.login label {
-    float: left;
-    width: 100px;
-    line-height: 40px;
-    padding-right: 10px;
-    font-weight: 100;
-    text-align: right;
-    letter-spacing: 1px;
-}
-
-.registr label {
-    float: left;
-    width: 200px;
-    line-height: 40px;
-    padding-right: 10px;
-    font-weight: 100;
-    text-align: right;
-    letter-spacing: 1px;
-}
-
-.forgot-password {
-    padding-left: 100px;
-    font-size: 13px;
-    font-weight: 100;
-    letter-spacing: 1px;
-}
-
-.login-submit,
-.registr-submit {
-    position: absolute;
-    top: 12px;
-    right: 0;
-    width: 48px;
-    height: 48px;
-    padding: 8px;
-    border-radius: 32px;
-    -webkit-box-shadow: 0 0 4px rgba(0, 0, 0, 0.35);
-    box-shadow: 0 0 4px rgba(0, 0, 0, 0.35);
-}
-
-.login-submit:before,
-.login-submit:after,
-.registr-submit:before,
-.registr-submit:after {
-    content: '';
-    z-index: 1;
-    position: absolute;
-}
-
-.login-submit:before,
-.registr-submit:before {
-    top: 28px;
-    left: -4px;
-    width: 4px;
-    height: 10px;
-    -webkit-box-shadow: inset 0 1px rgba(255, 255, 255, 0.06);
-    box-shadow: inset 0 1px rgba(255, 255, 255, 0.06);
-}
-
-.login-submit:after,
-.registr-submit:after {
-    top: -4px;
-    bottom: -4px;
-    right: -4px;
-    width: 36px;
-}
-
-.login-button,
-.registr-button {
-    position: relative;
-    z-index: 2;
-    width: 48px;
-    height: 48px;
-    padding: 0 0 48px;
-    /* Fix wrong positioning in Firefox 9 & older (bug 450418) */
-    text-indent: 120%;
-    white-space: nowrap;
-    overflow: hidden;
-    background: none;
-    border: 0;
-    outline: 0;
-    border-radius: 24px;
-    cursor: pointer;
-    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.2), 0 1px rgba(255, 255, 255, 0.1);
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.2), 0 1px rgba(255, 255, 255, 0.1);
-    /* Must use another pseudo element for the gradient background because Webkit */
-    /* clips the background incorrectly inside elements with a border-radius.     */
-}
-
-.login-button:before,
-.registr-button:before {
-    content: '';
-    position: absolute;
-    top: 5px;
-    bottom: 5px;
-    left: 5px;
-    right: 5px;
-    background: #00a2d3;
-    border-radius: 24px;
-    background-image: -webkit-linear-gradient(top, #00a2d3, #0d7796);
-    background-image: -moz-linear-gradient(top, #00a2d3, #0d7796);
-    background-image: -o-linear-gradient(top, #00a2d3, #0d7796);
-    background-image: linear-gradient(to bottom, #00a2d3, #0d7796);
-    -webkit-box-shadow: inset 0 0 0 1px #00a2d3, 0 0 0 5px rgba(0, 0, 0, 0.16);
-    box-shadow: inset 0 0 0 1px #00a2d3, 0 0 0 5px rgba(0, 0, 0, 0.16);
-}
-
-.login-button:active:before,
-.registr-button:active:before {
-    background: #0591ba;
-    background-image: -webkit-linear-gradient(top, #0591ba, #00a2d3);
-    background-image: -moz-linear-gradient(top, #0591ba, #00a2d3);
-    background-image: -o-linear-gradient(top, #0591ba, #00a2d3);
-    background-image: linear-gradient(to bottom, #0591ba, #00a2d3);
-}
-
-.login-button:after,
-.registr-button:after {
-    content: '';
-    position: absolute;
-    top: 15px;
-    left: 12px;
-    width: 25px;
-    height: 19px;
-    background: url("../images/arrow.png")0 0 no-repeat;
-}
-
-.error {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: red;
-    font-size: 20px;
-    text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.8);
-    margin: 10px auto;
-    background-color: #2A3436;
-    color: #ff3838;
-    width: 30%;
-    border-radius: 11px;
-    border: 3px solid #589CF7;
-}
-
-.error p {
-    margin-: 8px;
-    text-shadow: 2px 8px 6px rgba(0, 0, 0, 0.2), 0px -5px 35px rgba(255, 255, 255, 0.3);
-}
-
-
 /*----------------------------------------- adminPanel ---------------------------------------*/
 
 #id-adminPanel {
     color: #000000;
+}
+
+#admin-section-2 {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.table_blur {
+    background: #f5ffff;
+    border-collapse: collapse;
+    text-align: left;
+    margin-top: 30px;
+}
+
+.table_blur th {
+    border-top: 1px solid #777777;
+    border-bottom: 1px solid #777777;
+    box-shadow: inset 0 1px 0 #999999, inset 0 -1px 0 #999999;
+    background: linear-gradient(#9595b6, #5a567f);
+    color: white;
+    padding: 10px 15px;
+    position: relative;
+}
+
+.table_blur th:after {
+    content: "";
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 25%;
+    height: 25%;
+    width: 100%;
+    background: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, .08));
+}
+
+.table_blur tr:nth-child(odd) {
+    background: #ebf3f9;
+}
+
+.table_blur th:first-child {
+    border-left: 1px solid #777777;
+    border-bottom: 1px solid #777777;
+    box-shadow: inset 1px 1px 0 #999999, inset 0 -1px 0 #999999;
+}
+
+.table_blur th:last-child {
+    border-right: 1px solid #777777;
+    border-bottom: 1px solid #777777;
+    box-shadow: inset -1px 1px 0 #999999, inset 0 -1px 0 #999999;
+}
+
+.table_blur td {
+    border: 1px solid #e3eef7;
+    padding: 6px 14px;
+    position: relative;
+    transition: all 0.5s ease;
+    font-size: 25px;
+}
+
+.table_blur tbody:hover td {
+    color: transparent;
+    text-shadow: 0 0 3px #a09f9d;
+}
+
+.table_blur tbody:hover tr:hover td {
+    color: #444444;
+    text-shadow: none;
+}
+
+
+/*----------------------------------- кнопка сохранить,удалить --------------------------------------*/
+
+#id-adminPanel .button {
+    background-image: -webkit-linear-gradient(top, #f4f1ee, #fff);
+    background-image: linear-gradient(top, #f4f1ee, #fff);
+    border-radius: 50%;
+    box-shadow: 0px 8px 10px 0px rgba(0, 0, 0, .3), inset 0px 4px 1px 1px white, inset 0px -3px 1px 1px rgba(204, 198, 197, .5);
+    float: left;
+    height: 50px;
+    margin: -10px 0px 18px 0;
+    position: relative;
+    width: 50px;
+    -webkit-transition: all .1s linear;
+    transition: all .1s linear;
+}
+
+#id-adminPanel .button:after {
+    color: #e9e6e4;
+    content: "";
+    display: block;
+    font-size: 30px;
+    height: 30px;
+    text-decoration: none;
+    text-shadow: 0px -1px 1px #bdb5b4, 1px 1px 1px white;
+    position: absolute;
+    width: 30px;
+}
+
+.tick {
+    margin-left: -4px;
+}
+
+#id-adminPanel .tick:after {
+    content: "✔";
+    left: 13px;
+    top: 6px;
+}
+
+#id-adminPanel .cross:after {
+    content: "✖";
+    left: 13px;
+    top: 5px;
+}
+
+#id-adminPanel .button:hover {
+    background-image: -webkit-linear-gradient(top, #fff, #f4f1ee);
+    background-image: linear-gradient(top, #fff, #f4f1ee);
+    color: #0088cc;
+}
+
+#id-adminPanel .tick:hover:after {
+    color: #83d244;
+    text-shadow: 0px 0px 6px #83d244;
+}
+
+#id-adminPanel .cross:hover:after {
+    color: #eb2f2f;
+    text-shadow: 0px 0px 6px #eb2f2f;
+}
+
+#id-adminPanel .button:active {
+    background-image: -webkit-linear-gradient(top, #efedec, #f7f4f4);
+    background-image: linear-gradient(top, #efedec, #f7f4f4);
+    box-shadow: 0 3px 5px 0 rgba(0, 0, 0, .4), inset 0px -3px 1px 1px rgba(204, 198, 197, .5);
+}
+
+#id-adminPanel .button:active:after {
+    color: #dbd2d2;
+    text-shadow: 0px -1px 1px #bdb5b4, 0px 1px 1px white;
+}
+
+#cnt-adminTabs1 {
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+
+/*------------------------------ кнопка добавления ------------------------------*/
+
+.btn-class-adminSection {
+    cursor: pointer;
+    margin-top: 10px;
+    text-decoration: none;
+    text-align: center;
+    padding: 13px 17px;
+    border: solid 1px #777777;
+    font: 19px Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #9595b6;
+    background-image: -moz-linear-gradient(top, #9595b6 0%, #5a567f 100%);
+    background-image: -webkit-linear-gradient(top, #9595b6 0%, #5a567f 100%);
+    background-image: -o-linear-gradient(top, #9595b6 0%, #5a567f 100%);
+    background-image: -ms-linear-gradient(top, #9595b6 0%, #5a567f 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5a567f', endColorstr='#5a567f', GradientType=0);
+    background-image: linear-gradient(top, #9595b6 0%, #5a567f 100%);
+    -webkit-box-shadow: 0px 0px 2px #bababa, inset 0px 0px 1px #ffffff;
+    -moz-box-shadow: 0px 0px 2px #bababa, inset 0px 0px 1px #ffffff;
+    box-shadow: 0px 0px 2px #bababa, inset 0px 0px 1px #ffffff;
+    text-shadow: 0px 0px 7px #bababa;
+    filter: dropshadow(color=#bababa, offx=0, offy=0);
+}
+
+.btn-class-adminSection:hover {
+    cursor: pointer;
+    padding: 13px 17px;
+    border: solid 1px #777777;
+    font: 19px Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    color: #82f27e;
+    background-color: #9595b6;
+    background-image: -moz-linear-gradient(top, #9595b6 0%, #5a567f 100%);
+    background-image: -webkit-linear-gradient(top, #9595b6 0%, #5a567f 100%);
+    background-image: -o-linear-gradient(top, #9595b6 0%, #5a567f 100%);
+    background-image: -ms-linear-gradient(top, #9595b6 0%, #5a567f 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#5a567f', endColorstr='#5a567f', GradientType=0);
+    background-image: linear-gradient(top, #9595b6 0%, #5a567f 100%);
+    -webkit-box-shadow: 0px 0px 2px #bababa, inset 0px 0px 2px #ffffff;
+    -moz-box-shadow: 0px 0px 2px #bababa, inset 0px 0px 2px #ffffff;
+    box-shadow: 0px 0px 2px #bababa, inset 0px 0px 2px #ffffff;
+    text-shadow: 0px 0px 7px #33cf14;
+    filter: dropshadow(color=#33cf14, offx=0, offy=0);
+}
+
+.btn-class-adminSection:active {
+    cursor: pointer;
+    padding: 13px 17px;
+    border: solid 1px #777777;
+    font: 19px Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    color: #82f27e;
+    background: #5a567f;
+    -webkit-box-shadow: 2px 3px 2px #bababa, inset 0px 0px 1px #ffffff;
+    -moz-box-shadow: 2px 3px 2px #bababa, inset 0px 0px 1px #ffffff;
+    box-shadow: 2px 3px 2px #bababa, inset 0px 0px 1px #ffffff;
+    text-shadow: 0px 0px 7px #33cf14;
+    filter: dropshadow(color=#33cf14, offx=0, offy=0);
+}
+
+
+/*------------------------- поиск -----------------------------------*/
+
+* {
+    box-sizing: border-box;
+}
+
+#idForm {
+    margin-left: 30px;
+}
+
+#idForm form {
+    width: auto;
+    float: left;
+}
+
+#idForm input {
+    width: 300px;
+    height: 42px;
+    padding-left: 15px;
+    border-radius: 42px;
+    border: 2px solid #324b4e;
+    background: #F9F0DA;
+    outline: none;
+    position: relative;
+    transition: .3s linear;
+}
+
+#idForm input:focus {
+    width: 360px;
+    transition: .3s;
+}
+
+#idForm input:focus+button {
+    left: 52.4em;
+    transition: .3s;
+}
+
+#idForm button {
+    transition: .4s;
+    width: 42px;
+    height: 42px;
+    background: none;
+    border: none;
+    position: absolute;
+    top: 11.7em;
+    left: 48.4em;
+}
+
+#idForm button:before {
+    content: "\f002";
+    font-family: FontAwesome;
+    color: #324b4e;
 }
